@@ -1,0 +1,3 @@
+#~/bin/sh
+
+pd -nogui midi-dump.pd
