@@ -52,12 +52,17 @@ void setup()
   digitalWrite(ledPin, HIGH);
 }
 
+void update_button(int pin, int btnState) {
+  usbMIDI.sendControlChange(pin, btnState ? 127 : 0, channel);
+  digitalWrite(ledPin, btnState ? HIGH : LOW);
+}
+
 void loop()
 {
   // Get reading for all potentiometers
   for (int i = 0; i < pots; i++ ) {
     // http://electronics.stackexchange.com/a/64699
-    weighted[i] += (analogRead(pot_lookup[i]) - weighted[i]) / 8;
+    weighted[i] += (analogRead(pot_lookup[i]) - weighted[i]) / (i == 0 ? 8 : 4);
     int midival = weighted[i] / 8;
     int midiprev = lastreading[i] / 8;
     if (abs(lastreading[i] - weighted[i]) > THRESHOLD && midival != midiprev) {
@@ -65,12 +70,13 @@ void loop()
       if (i == 0) {
         usbMIDI.sendControlChange(i, midival, channel);
       } else if (i == 1) {
-        if (midival < 4 && midiprev >= 4) {
-          //usbMIDI.sendControlChange(i, r / 8, channel);
-          btnState = !btnState;
-          usbMIDI.sendControlChange(i, btnState ? 127 : 0, channel);
-          digitalWrite(ledPin, btnState ? HIGH : LOW);
-        }
+        if (midival < 4 && btnState == 0) {
+          btnState = 1;
+          update_button(i, btnState);
+        } else if (midival > 4 && btnState == 1) {
+          btnState = 0;
+          update_button(i, btnState);
+	}
       }
       lastreading[i] = weighted[i];
     }
