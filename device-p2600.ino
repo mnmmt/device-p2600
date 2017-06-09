@@ -31,7 +31,7 @@ void setup()
 
   // Standard midi rate
   Serial.begin(31250);
-  
+
   pinMode(pot_lookup[0], INPUT); 
   digitalWrite(pot_lookup[0], LOW);
 
@@ -39,7 +39,16 @@ void setup()
   digitalWrite(pot_lookup[1], HIGH);
   usbMIDI.sendControlChange(1, 127, channel);
 
+  // flash to indicate startup
   pinMode(ledPin, OUTPUT);
+  digitalWrite(ledPin, HIGH);
+  delay(250);
+  digitalWrite(ledPin, LOW);
+  delay(250);
+  digitalWrite(ledPin, HIGH);
+  delay(250);
+  digitalWrite(ledPin, LOW);
+  delay(250);
   digitalWrite(ledPin, HIGH);
 }
 
