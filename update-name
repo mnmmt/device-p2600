@@ -1,0 +1,6 @@
+#!/bin/sh
+
+F="${HOME}/bin/contrib/arduino-1.6.12/hardware/teensy/avr/cores/usb_midi/usb_private.h"
+name=$(basename `pwd` | sed "s/device-//g")
+
+sed -i.bak "s/\(STR_PRODUCT.*L\).*/\\1\"${name}\"/g" "$F"
