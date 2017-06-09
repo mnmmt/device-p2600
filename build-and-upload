@@ -1,3 +1,3 @@
 #!/bin/sh
 
-arduino --upload paddle-midi-teensy-controller.ino
+arduino --upload *.ino
