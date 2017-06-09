@@ -68,7 +68,7 @@ void loop()
     if (abs(lastreading[i] - weighted[i]) > THRESHOLD && midival != midiprev) {
       //usbMIDI.sendControlChange(2, 64, channel);
       if (i == 0) {
-        usbMIDI.sendControlChange(i, midival, channel);
+        usbMIDI.sendControlChange(i, 127 - midival, channel);
       } else if (i == 1) {
         if (midival < 4 && btnState == 0) {
           btnState = 1;
